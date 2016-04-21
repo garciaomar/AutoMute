@@ -21,9 +21,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setContentView(R.layout.activity_main);
         Toolbar toolbar =(Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        Fragment home = new Home();
+        Fragment myHome = new Home();
         android.support.v4.app.FragmentTransaction fragmentTransaction1 = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction1.replace(R.id.content_frame,home);
+        fragmentTransaction1.replace(R.id.content_frame, myHome);
         fragmentTransaction1.commit();
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -55,10 +55,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (id == R.id.nav_home) {
             fragment = new Home();
             setTitle(R.string.Home);
-        } /*else if (id == R.id.nav_map) {
+        } else if (id == R.id.nav_map) {
             fragment = new Map();
             setTitle(R.string.Mapa);
-        }*/
+        }else if (id == R.id.nav_places){
+            fragment =  new Places();
+            setTitle(R.string.mis_lugares);
+        }
 
         android.support.v4.app.FragmentTransaction fragmentTransaction1
                 = getSupportFragmentManager().beginTransaction();
@@ -69,4 +72,5 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
 }
