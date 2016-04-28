@@ -9,33 +9,43 @@ import android.os.IBinder;
 import android.support.annotation.Nullable;
 
 /**
- * Created by Erick on 27/04/2016.
+ * Created by Omar on 27/04/2016.
  */
 public class MuteService extends Service {
 
     final class MuteThread implements Runnable{
         int serviceId;
         AudioManager audio;
-        int ringVolume;
+        int initialVolume;
         boolean isMuted = false;
         MuteThread(int serviceId) {
             this.serviceId = serviceId;
             audio = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
-            ringVolume = audio.getStreamVolume(AudioManager.STREAM_RING);
-            System.out.println("Volumen actual: " + ringVolume);
+            initialVolume = audio.getStreamVolume(AudioManager.STREAM_RING);
+            System.out.println("Volumen actual: " + initialVolume);
         }
 
 
         @Override
         public void run() {
-            if (isMuted) {
-                audio.setStreamVolume(AudioManager.STREAM_NOTIFICATION, ringVolume, 0);
-                isMuted = false;
-            } else {
-                System.out.println("No esta en mute ");
-                audio.setStreamVolume(AudioManager.STREAM_NOTIFICATION, 0, 0);
-                System.out.println("Nuevo volumen " + audio.getStreamVolume(AudioManager.STREAM_RING));
-                isMuted = true;
+            while (true) {
+                synchronized (this) {
+                    try {
+                        this.wait(5000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+
+                }
+                if (isMuted) {
+                    audio.setStreamVolume(AudioManager.STREAM_NOTIFICATION, initialVolume, 0);
+                    isMuted = false;
+                } else {
+                    System.out.println("No esta en mute ");
+                    audio.setStreamVolume(AudioManager.STREAM_NOTIFICATION, 0, 0);
+                    System.out.println("Nuevo volumen " + audio.getStreamVolume(AudioManager.STREAM_RING));
+                    isMuted = true;
+                }
             }
         }
     }
@@ -47,8 +57,8 @@ public class MuteService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        MuteThread thread = new MuteThread(startId);
-        thread.run();
+        Thread thread = new Thread(new MuteThread(startId));
+        thread.start();
         return START_STICKY;
     }
 
@@ -60,6 +70,6 @@ public class MuteService extends Service {
 
     @Override
     public void onDestroy() {
-        super.onDestroy();
+
     }
 }

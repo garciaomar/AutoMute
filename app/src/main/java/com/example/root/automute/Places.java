@@ -1,16 +1,13 @@
 package com.example.root.automute;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
 import android.widget.Switch;
-import android.widget.TextView;
 import android.widget.Toast;
 
 /**
@@ -18,10 +15,9 @@ import android.widget.Toast;
  */
 public class Places extends Fragment {
     Switch homeSwitch, workSwitch;
-    TextView tv;
+
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v =inflater.inflate(R.layout.content_places,container,false);
-
 
         return v;
     }
@@ -50,10 +46,10 @@ public class Places extends Fragment {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
-                    Intent intent = new Intent(getActivity(), MuteService.class);
+                    Intent intent = new Intent(getActivity(), MainThreadService.class);
                     startMuteService(intent, "AutoMute activado en Trabajo");
                 } else {
-                    Intent intent = new Intent(getActivity(), MuteService.class);
+                    Intent intent = new Intent(getActivity(), MainThreadService.class);
                     stopMuteService(intent, "AutoMute desactivado en Trabajo");
                 }
             }
