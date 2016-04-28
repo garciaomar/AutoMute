@@ -8,11 +8,8 @@ import android.support.annotation.Nullable;
 
 /**
  * Created by Omar on 28/04/2016.
- *
- * Prueba de un servicio que se ejecuta en el thread principal de la aplicacion
  */
 public class MainThreadService extends Service {
-
     AudioManager audio;
     int initialVolume;
     boolean isMuted = false;
