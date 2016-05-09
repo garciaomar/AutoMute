@@ -1,10 +1,45 @@
-<?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_marginTop="@dimen/fragment_start"
-    android:layout_height="match_parent">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Hello World!" />
-</RelativeLayout>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+android:orientation="vertical" android:layout_width="match_parent"
+android:layout_marginTop="@dimen/fragment_start"
+android:layout_height="match_parent"
+android:weightSum="1">
+
+<TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="AUTOMUTE"
+    android:id="@+id/tv"
+    android:layout_gravity="center_horizontal"
+    android:layout_weight="0.11"
+    android:textStyle="bold"
+    android:textSize="60sp"
+    android:textIsSelectable="false" />
+
+<TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="Numero de Lugares Silenciados"
+    android:id="@+id/tvLugaresSilenciados"
+    android:layout_gravity="center_horizontal"
+    android:layout_weight="0.11"
+    android:textColor="#9a9999"
+    android:textSize="20sp" />
+
+<TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="0"
+    android:id="@+id/textView"
+    android:layout_gravity="center_horizontal"
+    android:layout_weight="0.11"
+    android:textSize="80sp"
+    android:textStyle="normal|bold" />
+
+<TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="Numero de lugares donde se activara el modo vibrador"
+    android:id="@+id/textView2"
+    android:layout_gravity="center_horizontal"
+    android:layout_weight="0.11" />
+</LinearLayout>
