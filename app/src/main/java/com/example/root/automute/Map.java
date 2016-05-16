@@ -1,6 +1,8 @@
 package com.example.root.automute;
 
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.support.design.widget.FloatingActionButton;
@@ -12,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -19,6 +22,13 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+
+import java.io.FileWriter;
+import java.io.PrintWriter;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Set;
+import java.util.TreeSet;
 
 public class Map extends Fragment implements OnMapReadyCallback{
 
@@ -66,6 +76,30 @@ public class Map extends Fragment implements OnMapReadyCallback{
                 markerCoo = latLng;
             }
         });
+        SharedPreferences prefs = getActivity().getSharedPreferences("Places",Context.MODE_PRIVATE);
+        SharedPreferences prefs2 = getActivity().getSharedPreferences("Status",Context.MODE_PRIVATE);
+        HashMap<String,String>  places=  (HashMap)prefs.getAll();
+        HashMap<String,String>  status=  (HashMap)prefs2.getAll();
+
+        if ((places.size()!=0 && status.size()!=0) && (places.size()==status.size())){
+            Set keyset = places.keySet();
+            Iterator keyIterator = keyset.iterator();
+            while (keyIterator.hasNext()){
+                String key = (String)keyIterator.next();
+                if (status.get(key).equalsIgnoreCase("on")){
+                    String lat,lng;
+                    lat = places.get(key).substring(0,places.get(key).indexOf(","));
+                    lng = places.get(key).substring(places.get(key).indexOf(",")+1,places.get(key).length());
+                    Toast.makeText(getActivity(),lat,Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(),lat,Toast.LENGTH_SHORT).show();
+                    LatLng position = new LatLng(Double.valueOf(lat),Double.valueOf(lng));
+                    mMap.addMarker(new MarkerOptions().position(position).title(key));
+                    mMap.moveCamera(CameraUpdateFactory.newLatLng(position));
+                }
+
+            }
+        }
+
         // Add a marker in Sydney and move the camera
     /*    LatLng sydney = new LatLng(-34, 151);
         mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
@@ -85,6 +119,7 @@ public class Map extends Fragment implements OnMapReadyCallback{
             public void onClick(DialogInterface dialog, int which) {
                 EditText txt = (EditText)view.findViewById(R.id.nwplace);
                 mMap.addMarker(new MarkerOptions().position(latlng).title(txt.getText().toString()));
+                saveMarker(txt.getText().toString(),latlng,"ON");
             }
         }).setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
             @Override
@@ -93,5 +128,18 @@ public class Map extends Fragment implements OnMapReadyCallback{
             }
         }).setTitle("Agregar Lugar");
         return bld.create();
+    }
+
+    public void saveMarker(String title,LatLng lt, String status){
+        SharedPreferences prefs = getActivity().getSharedPreferences("Places",Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putString(title,lt.latitude+","+lt.longitude);
+        Toast.makeText(getActivity(),lt.latitude+"",Toast.LENGTH_SHORT).show();
+        Toast.makeText(getActivity(),lt.longitude+"",Toast.LENGTH_SHORT).show();
+        SharedPreferences prefs2 = getActivity().getSharedPreferences("Status",Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor2 = prefs2.edit();
+        editor2.putString(title,status);
+        editor.commit();
+        editor2.commit();
     }
 }
