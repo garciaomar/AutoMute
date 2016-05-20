@@ -7,37 +7,31 @@ import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.Toast;
-
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-
-import java.io.FileWriter;
-import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Set;
-import java.util.TreeSet;
 
 public class Map extends Fragment implements OnMapReadyCallback{
 
     private GoogleMap mMap;
     private FloatingActionButton fab;
-    private  LatLng markerCoo;
+    private LatLng markerCoo;
+
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.content_map, container, false);
-       SupportMapFragment mapFragment = (SupportMapFragment) this.getChildFragmentManager().findFragmentById(R.id.map);
+        SupportMapFragment mapFragment = (SupportMapFragment) this.getChildFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
         fab = (FloatingActionButton)v.findViewById(R.id.fab);
         fab.setEnabled(false);
@@ -90,8 +84,8 @@ public class Map extends Fragment implements OnMapReadyCallback{
                     String lat,lng;
                     lat = places.get(key).substring(0,places.get(key).indexOf(","));
                     lng = places.get(key).substring(places.get(key).indexOf(",")+1,places.get(key).length());
-                    Toast.makeText(getActivity(),lat,Toast.LENGTH_SHORT).show();
-                    Toast.makeText(getActivity(),lat,Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(getActivity(),lat,Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(getActivity(),lat,Toast.LENGTH_SHORT).show();
                     LatLng position = new LatLng(Double.valueOf(lat),Double.valueOf(lng));
                     mMap.addMarker(new MarkerOptions().position(position).title(key));
                     mMap.moveCamera(CameraUpdateFactory.newLatLng(position));
@@ -134,12 +128,13 @@ public class Map extends Fragment implements OnMapReadyCallback{
         SharedPreferences prefs = getActivity().getSharedPreferences("Places",Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
         editor.putString(title,lt.latitude+","+lt.longitude);
-        Toast.makeText(getActivity(),lt.latitude+"",Toast.LENGTH_SHORT).show();
-        Toast.makeText(getActivity(),lt.longitude+"",Toast.LENGTH_SHORT).show();
+        //Toast.makeText(getActivity(),lt.latitude+"",Toast.LENGTH_SHORT).show();
+        //Toast.makeText(getActivity(),lt.longitude+"",Toast.LENGTH_SHORT).show();
         SharedPreferences prefs2 = getActivity().getSharedPreferences("Status",Context.MODE_PRIVATE);
         SharedPreferences.Editor editor2 = prefs2.edit();
         editor2.putString(title,status);
         editor.commit();
         editor2.commit();
+
     }
 }

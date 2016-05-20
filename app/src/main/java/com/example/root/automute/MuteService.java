@@ -4,7 +4,11 @@ import android.annotation.TargetApi;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.media.AudioManager;
+import android.os.Bundle;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 
@@ -16,18 +20,25 @@ public class MuteService extends Service {
     final class MuteThread implements Runnable{
         int serviceId;
         AudioManager audio;
+        LocationManager locationManager;
         int initialVolume;
         boolean isMuted = false;
+        int activePlaces;
+
         MuteThread(int serviceId) {
             this.serviceId = serviceId;
             audio = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+            locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
             initialVolume = audio.getStreamVolume(AudioManager.STREAM_RING);
             System.out.println("Volumen actual: " + initialVolume);
+
         }
 
 
         @Override
         public void run() {
+
+
             while (true) {
                 synchronized (this) {
                     try {
